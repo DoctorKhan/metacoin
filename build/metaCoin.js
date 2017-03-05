@@ -341,22 +341,9 @@ app.config(function($locationProvider) {
 });
 
 app.controller("metaCoinController", ['$scope', '$location', '$http', '$q', '$window', '$timeout', function($scope, $location, $http, $q, $window, $timeout) {
-    // Everything
-    $scope.sendCoin = function(amount, receiver) {
-        var meta = MetaCoin.deployed();
-
-        setStatus("Initiating transaction... (please wait)");
-
-        meta.sendCoin(receiver, amount, {
-            from: $scope.account
-        }).then(function() {
-            setStatus("Transaction complete!");
-            $scope.refreshBalance();
-        }).catch(function(e) {
-            console.log(e);
-            setStatus("Error sending coin; see log.");
-        });
-    };
+    $scope.accounts = [];
+    $scope.account = "";
+    $scope.balance = "";
 
     $scope.refreshBalance = function() {
 	    var meta = MetaCoin.deployed();
@@ -374,11 +361,35 @@ app.controller("metaCoinController", ['$scope', '$location', '$http', '$q', '$wi
 
     $window.onload = function () {
 	    web3.eth.getAccounts(function(err, accs) {
-		// Same as before
+		if (err != null) {
+			alert("There was an error fetching your accounts.");
+			return;
+		}
+
+		if (accs.length == 0) {
+			alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
+			return;
+		}
+		
 		$scope.accounts = accs;
 		$scope.account = $scope.accounts[0];
 		$scope.refreshBalance();
 	    });
     }
 
+    $scope.sendCoin = function(amount, receiver) {
+        var meta = MetaCoin.deployed();
+
+        setStatus("Initiating transaction... (please wait)");
+
+        meta.sendCoin(receiver, amount, {
+            from: $scope.account
+        }).then(function() {
+            setStatus("Transaction complete!");
+            $scope.refreshBalance();
+        }).catch(function(e) {
+            console.log(e);
+            setStatus("Error sending coin; see log.");
+        });
+    };
 }]);
