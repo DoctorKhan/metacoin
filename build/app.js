@@ -5698,7 +5698,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     ],
     "unlinked_binary": "0x6060604052603d8060106000396000f36504044633f3de50606060405260e060020a600035046396e4ee3d81146024575b6007565b6024356004350260408051918252519081900360200190f3",
     "events": {},
-    "updated_at": 1480299994663
+    "updated_at": 1488687673894,
+    "links": {},
+    "address": "0xbf82a8680ac3951bcec712c360647464502a8006"
   }
 };
 
@@ -6289,7 +6291,11 @@ var SolidityEvent = require("web3/lib/web3/event.js");
         "type": "event"
       }
     },
-    "updated_at": 1480299994667
+    "updated_at": 1488687673883,
+    "links": {
+      "ConvertLib": "0xbf82a8680ac3951bcec712c360647464502a8006"
+    },
+    "address": "0xd0dfde973b09977acbb45ce7078b8dc9004877fb"
   }
 };
 
@@ -6829,7 +6835,9 @@ var SolidityEvent = require("web3/lib/web3/event.js");
     ],
     "unlinked_binary": "0x6060604052600080546c0100000000000000000000000033810204600160a060020a0319909116179055610138806100376000396000f3606060405260e060020a60003504630900f010811461003f578063445df0ac146100b85780638da5cb5b146100c6578063fdacd576146100dd575b610002565b34610002576101086004356000805433600160a060020a03908116911614156100b45781905080600160a060020a031663fdacd5766001600050546040518260e060020a02815260040180828152602001915050600060405180830381600087803b156100025760325a03f115610002575050505b5050565b346100025761010a60015481565b346100025761011c600054600160a060020a031681565b346100025761010860043560005433600160a060020a03908116911614156101055760018190555b50565b005b60408051918252519081900360200190f35b60408051600160a060020a039092168252519081900360200190f3",
     "events": {},
-    "updated_at": 1480299994667
+    "updated_at": 1488687673902,
+    "address": "0x4f2293f50702b5f86111ac3f6118a3b635a302ad",
+    "links": {}
   }
 };
 
@@ -44145,7 +44153,7 @@ window.addEventListener('load', function() {
 
     // Use the provider from the config.                        
 
-    window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:30303')); 
+    window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); 
 
   }                                                             
 
@@ -44163,41 +44171,3 @@ window.addEventListener('load', function() {
 
  
 
-var accounts;
-var account;
-
-function setStatus(message) {
-  var status = document.getElementById("status");
-  status.innerHTML = message;
-};
-
-function refreshBalance() {
-  var meta = MetaCoin.deployed();
-
-  meta.getBalance.call(account, {from: account}).then(function(value) {
-    var balance_element = document.getElementById("balance");
-    balance_element.innerHTML = value.valueOf();
-  }).catch(function(e) {
-    console.log(e);
-    setStatus("Error getting balance; see log.");
-  });
-};
-
-window.onload = function() {
-  web3.eth.getAccounts(function(err, accs) {
-    if (err != null) {
-      alert("There was an error fetching your accounts.");
-      return;
-    }
-
-    if (accs.length == 0) {
-      alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
-      return;
-    }
-
-    accounts = accs;
-    account = accounts[0];
-
-    refreshBalance();
-  });
-}
